@@ -19,11 +19,20 @@
 
 import logging
 import mlat.server.main
+from logging.handlers import RotatingFileHandler
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         style='{',
                         format='{asctime}.{msecs:03.0f}  {levelname:8s} {name:20s} {message}',
                         datefmt='%Y%m%d %H:%M:%S')
+    #################################################################################################
+    #RotatingFileHandler，max 20 log files，max size of each log file is 20M
+    Rthandler = RotatingFileHandler('/home/yang/MLAT/mlat-server-master/log/mlat.log', 'a', maxBytes=20*1024*1024, backupCount=20)
+    Rthandler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)-26s %(levelname)-8s %(name)-20s %(message)s')
+    Rthandler.setFormatter(formatter)
+    logging.getLogger('').addHandler(Rthandler)
+    ################################################################################################
 
     mlat.server.main.MlatServer().run()
